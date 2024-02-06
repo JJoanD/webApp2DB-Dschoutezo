@@ -1,6 +1,6 @@
 package com.example.webapp2DB_Dschoutezo.model;
 
-import jakarta.annotation.Generated;
+//import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
