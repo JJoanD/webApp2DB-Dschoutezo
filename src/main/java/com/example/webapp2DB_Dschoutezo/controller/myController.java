@@ -41,11 +41,6 @@ public class myController {
     public String helloName(@PathVariable String name){
         return String.format("Hello , %s!", name);
     }
-
-    @GetMapping("/list")
-    public List<Persona> lista(){
-        return personaRepository.findAll();
-    }
     
     @PostMapping()
     public Persona persona (@RequestBody Persona p){
@@ -67,16 +62,34 @@ public class myController {
 
 
     @DeleteMapping()
-    public ResponseEntity<String> delete(@RequestParam(value = "id") long id){
-        Persona p = personaRepository.getReferenceById(id);
-        personaRepository.delete(p);
+    public ResponseEntity<String> delete(@RequestParam(name = "id") long id){
+        personaRepository.deleteById(id);
         return ResponseEntity.ok("Utente cancellato");
     }
 
     //chiedere al prof se ci sono differenze tra getReferenceById e getById
 
+    @GetMapping("/list")
+    public List<Persona> list(@RequestParam(name = "nome", required = false) String name, @RequestParam(name = "eta", required = false) Integer eta){
 
+        if (name == null && eta == null) {
 
+            return personaRepository.findAll();
+        } else if (name != null && eta == null) 
+        {
+            return personaRepository.findByNome(name);
+        } else if (eta != null && name == null) {
+            return personaRepository.findByEta(eta);
+        } else {
+            return personaRepository.findByNomeAndEta(name, eta);
+        }
+    }
+    
+    @GetMapping("/search")
+    public List<Persona> trova(@RequestParam(name = "nome") String name){
+       return personaRepository.findByNomeContains(name);
+    }
+
+}
 
     
-}
